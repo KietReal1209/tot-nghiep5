@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Quản Lý Danh Sách Tài Khoản</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /*--- HEADER ---*/
+        header {
+            background-color: #cc2424;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-area a {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 40%;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            border: none;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            background-color: #ff9900;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /*--- LAYOUT CHÍNH ---*/
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /*--- SIDEBAR TRÁI ---*/
+        aside {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        /* Trang danh sách tài khoản đang active */
+        .menu-item.active > a {
+            color: white;
+            background-color: #cc2424;
+        }
+
+        /* --- SUBMENU HOVER --- */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+
+        .submenu li a:hover {
+            color: #cc2424;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .btn-account {
+            display: block;
+            text-align: center;
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        /*--- NỘI DUNG PHẢI ---*/
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #ff7300, #ff9900);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* KHU VỰC BẢNG QUẢN LÝ */
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow-x: auto; /* Cuộn ngang nếu màn hình nhỏ */
+        }
+
+        .table-card h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+            padding: 14px 12px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            color: #555;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #fdfdfd;
+        }
+
+        /* Badge phân quyền & trạng thái */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .badge-admin { background: #e3f2fd; color: #0d47a1; }
+        .badge-user { background: #e8f5e9; color: #1b5e20; }
+        .badge-active { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .badge-locked { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* Nút hành động */
+        .btn-action {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 5px;
+            transition: background 0.2s;
+        }
+
+        .btn-edit { background: #ff9900; color: white; }
+        .btn-edit:hover { background: #e68a00; }
+        .btn-delete { background: #cc2424; color: white; }
+        .btn-delete:hover { background: #b31f1f; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area"><a href="trangchu.html">LKH STORE</a></div>
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm tài khoản...">
+            <button>Tìm</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <aside>
+            <div class="menu-title">Danh Mục</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="index.html">🏠 Trang chủ</a>
+                    <ul class="submenu">
+                        <li><a href="trangchu.html">🔥 Khuyến mãi hôm nay</a></li>
+                        <li><a href="trangchu.html">⭐ Sản phẩm nổi bật</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="index.html">📱 Sản phẩm</a></li>
+                <li class="menu-item"><a href="gioithieu.html">ℹ️ Giới thiệu</a></li>
+                <li class="menu-item"><a href="lienhe.html">📞 Liên hệ</a></li>
+                <li class="menu-item"><a href="theodoidonhang.html">🚚 Theo dõi đơn hàng</a></li>
+                <li class="menu-item active"><a href="danhsachtaikhoan.html">👥 Danh sách tài khoản</a></li>
+            </ul>
+            <a href="thongtintaikhoan.html" class="btn-account">👤 Tài khoản</a>
+        </aside>
+
+        <main>
+            <div class="banner">Hệ Thống Quản Trị Hệ Thống</div>
+            
+            <div class="table-card">
+                <h2>Danh Sách Người Dùng Đăng Ký</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ và Tên</th>
+                            <th>Tên tài khoản</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mảng giả lập chứa danh sách tài khoản người dùng
+        const users = [
+            { id: 1, name: "Lê Khánh Hoàng", user: "hoangadmin", email: "admin@lkhstore.com", role: "Admin", status: "Active" },
+            { id: 2, name: "Nguyễn Văn A", user: "nguyenvana", email: "vana@gmail.com", role: "User", status: "Active" },
+            { id: 3, name: "Trần Thị B", user: "tranthib", email: "thib99@gmail.com", role: "User", status: "Locked" },
+            { id: 4, name: "Phạm Minh C", user: "minhcuong", email: "cuongpm@yahoo.com", role: "User", status: "Active" },
+            { id: 5, name: "Hoàng Diệu L", user: "dieulinh", email: "linhhb@gmail.com", role: "User", status: "Active" }
+        ];
+
+        function renderUsers() {
+            const tbody = document.getElementById('user-table-body');
+            tbody.innerHTML = users.map(user => `
+                <tr id="row-${user.id}">
+                    <td><strong>#0${user.id}</strong></td>
+                    <td>${user.name}</td>
+                    <td>${user.user}</td>
+                    <td>${user.email}</td>
+                    <td><span class="badge ${user.role === 'Admin' ? 'badge-admin' : 'badge-user'}">${user.role}</span></td>
+                    <td><span class="badge ${user.status === 'Active' ? 'badge-active' : 'badge-locked'}">${user.status === 'Active' ? 'Đang hoạt động' : 'Đang bị khóa'}</span></td>
+                    <td>
+                        <button class="btn-action btn-edit" onclick="editUser('${user.name}')">Sửa</button>
+                        <button class="btn-action btn-delete" onclick="deleteUser(${user.id})">Xóa</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Thực hiện xử lý hành động Sửa / Xóa mẫu
+        function editUser(name) {
+            alert(`Tính năng sửa thông tin cho người dùng: [ ${name} ]`);
+        }
+
+        function deleteUser(id) {
+            if (confirm("Bạn có chắc chắn muốn xóa tài khoản người dùng này ra khỏi hệ thống không?")) {
+                const row = document.getElementById(`row-${id}`);
+                row.remove();
+                alert("Đã xóa tài khoản thành công!");
+            }
+        }
+
+        // Chạy hàm render khi mở trang lên
+        renderUsers();
+    </script>
+</body>
+</html>

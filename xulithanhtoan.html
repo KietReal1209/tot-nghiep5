@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Xử Lý Thanh Toán</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /*--- HEADER ---*/
+        header {
+            background-color: #cc2424;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-area a {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        /*--- LAYOUT CHÍNH ---*/
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /*--- SIDEBAR TRÁI ---*/
+        aside {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover > a {
+            background-color: #eee;
+        }
+
+        .btn-account {
+            display: block;
+            text-align: center;
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        /*--- NỘI DUNG PHẢI ---*/
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #ff7300, #ff9900);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* Layout 2 cột: Cột Nhập liệu & Cột Chốt đơn hàng */
+        .checkout-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .checkout-form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 450px;
+        }
+
+        .checkout-summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 350px;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 8px;
+        }
+
+        /* Cấu trúc Form */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #cc2424;
+        }
+
+        /* Phương thức thanh toán */
+        .payment-methods {
+            margin-top: 20px;
+        }
+
+        .method-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .method-option input {
+            cursor: pointer;
+        }
+
+        .method-option:hover {
+            border-color: #ff9900;
+            background-color: #fffbf5;
+        }
+
+        /* Khu vực QR code ẩn/hiện */
+        .qr-box {
+            display: none;
+            text-align: center;
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .qr-box img {
+            width: 150px;
+            height: 150px;
+        }
+
+        /* Bảng tóm tắt phía phải */
+        .prod-mini-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .prod-mini-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .summary-row.total {
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #cc2424;
+        }
+
+        .btn-submit-order {
+            display: block;
+            width: 100%;
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit-order:hover {
+            background-color: #b31f1f;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area"><a href="trangchu.html">LKH STORE</a></div>
+        <div style="font-weight: bold; font-size: 14px;">🔒 THANH TOÁN AN TOÀN</div>
+    </header>
+
+    <div class="container">
+        
+        <aside>
+            <div class="menu-title">Danh Mục</div>
+            <ul class="menu-list">
+                <li class="menu-item"><a href="index.html">🏠 Trang chủ</a></li>
+                <li class="menu-item"><a href="index.html">📱 Sản phẩm</a></li>
+                <li class="menu-item"><a href="gioithieu.html">ℹ️ Giới thiệu</a></li>
+                <li class="menu-item"><a href="lienhe.html">📞 Liên hệ</a></li>
+                <li class="menu-item"><a href="theodoidonhang.html">🚚 Theo dõi đơn hàng</a></li>
+                <li class="menu-item"><a href="danhsachtaikhoan.html">👥 Danh sách tài khoản</a></li>
+            </ul>
+            <a href="thongtintaikhoan.html" class="btn-account">👤 Tài khoản</a>
+        </aside>
+
+        <main>
+            <div class="banner">Tiến hành đặt hàng & Thanh toán</div>
+            
+            <form class="checkout-wrapper" onsubmit="placeOrder(event)">
+                
+                <div class="checkout-form-card">
+                    <h2>1. Thông tin giao hàng</h2>
+                    <div class="form-group">
+                        <label>Họ và tên người nhận *</label>
+                        <input type="text" placeholder="Nhập đầy đủ họ tên..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại *</label>
+                        <input type="tel" placeholder="Nhập số điện thoại liên hệ..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ nhận hàng *</label>
+                        <input type="text" placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú đơn hàng (Tùy chọn)</label>
+                        <textarea rows="3" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."></textarea>
+                    </div>
+
+                    <div class="payment-methods">
+                        <h2>2. Phương thức thanh toán</h2>
+                        
+                        <label class="method-option" onclick="toggleQR(false)">
+                            <input type="radio" name="payment" value="cod" checked>
+                            <div>
+                                <strong>Thanh toán khi nhận hàng (COD)</strong>
+                                <p style="font-size: 12px; color: #666; margin-top: 3px;">Bạn sẽ trả tiền mặt cho shipper khi nhận được hàng.</p>
+                            </div>
+                        </label>
+
+                        <label class="method-option" onclick="toggleQR(true)">
+                            <input type="radio" name="payment" value="qr">
+                            <div>
+                                <strong>Chuyển khoản qua mã QR Ngân hàng (Auto)</strong>
+                                <p style="font-size: 12px; color: #666; margin-top: 3px;">Quét mã nhận diện đơn hàng nhanh để xử lý ngay.</p>
+                            </div>
+                        </label>
+
+                        <div class="qr-box" id="qr-payment-box">
+                            <p style="font-size: 13px; font-weight: bold; color: #cc2424; margin-bottom: 8px;">Quét mã này để thanh toán:</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=LKHSTORE_THANHTOAN" alt="QR Code Thanh Toán">
+                            <p style="font-size: 12px; color: #666; margin-top: 5px;">Nội dung CK: <strong style="color:#000;">LKH982</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-summary-card">
+                    <h2>3. Đơn hàng của bạn</h2>
+                    
+                    <ul class="prod-mini-list">
+                        <li class="prod-mini-item">
+                            <span>iPhone 15 Pro Max x1</span>
+                            <strong>29.490.000đ</strong>
+                        </li>
+                        <li class="prod-mini-item">
+                            <span>Ốp lưng Magsafe x2</span>
+                            <strong>900.000đ</strong>
+                        </li>
+                    </ul>
+
+                    <div class="summary-row">
+                        <span>Tạm tính:</span>
+                        <span>30.390.000đ</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Phí vận chuyển:</span>
+                        <span style="color: green; font-weight: bold;">Miễn phí</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Tổng thanh toán:</span>
+                        <span>30.390.000đ</span>
+                    </div>
+
+                    <button type="submit" class="btn-submit-order">Xác Nhận Đặt Hàng</button>
+                </div>
+
+            </form>
+        </main>
+    </div>
+
+    <script>
+        // Hàm ẩn hiện khung QR Code tùy thuộc vào lựa chọn của người dùng
+        function toggleQR(show) {
+            const qrBox = document.getElementById('qr-payment-box');
+            if (show) {
+                qrBox.style.display = 'block';
+            } else {
+                qrBox.style.display = 'none';
+            }
+        }
+
+        // Hàm xử lý hoàn tất đơn hàng
+        function placeOrder(event) {
+            event.preventDefault(); // Ngăn trình duyệt tải lại trang khi submit form
+            
+            alert('🎉 Đặt hàng thành công!\nMã đơn hàng của bạn là: #LKH982.\nLKH STORE sẽ liên hệ xác nhận trong giây lát.');
+            window.location.href = "trangchu.html"; // Chuyển về trang chủ sau khi hoàn tất
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Liên Hệ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /*--- HEADER ---*/
+        header {
+            background-color: #cc2424;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-area a {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 40%;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            border: none;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            background-color: #ff9900;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /*--- LAYOUT CHÍNH ---*/
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /*--- SIDEBAR TRÁI ---*/
+        aside {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        /* Trang liên hệ đang active */
+        .menu-item.active > a {
+            color: white;
+            background-color: #cc2424;
+        }
+
+        /* --- SUBMENU HOVER --- */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+
+        .submenu li a:hover {
+            color: #cc2424;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .btn-account {
+            display: block;
+            text-align: center;
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        /*--- NỘI DUNG PHẢI ---*/
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #ff7300, #ff9900);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* KHU VỰC LIÊN HỆ ĐÔI (CHIA CỘT) */
+        .contact-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-info, .contact-form {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-info h2, .contact-form h2 {
+            color: #cc2424;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .contact-info p {
+            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* THIẾT KẾ FORM NHẬP LIỆU */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #cc2424;
+        }
+
+        .btn-submit {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area"><a href="trangchu.html">LKH STORE</a></div>
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm thông tin...">
+            <button>Tìm</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <aside>
+            <div class="menu-title">Danh Mục</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="index.html">🏠 Trang chủ</a>
+                    <ul class="submenu">
+                        <li><a href="trangchu.html">🔥 Khuyến mãi hôm nay</a></li>
+                        <li><a href="trangchu.html">⭐ Sản phẩm nổi bật</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="index.html">📱 Sản phẩm</a></li>
+                <li class="menu-item"><a href="gioithieu.html">ℹ️ Giới thiệu</a></li>
+                <li class="menu-item active"><a href="lienhe.html">📞 Liên hệ</a></li>
+                <li class="menu-item"><a href="theodoidonhang.html">🚚 Theo dõi đơn hàng</a></li>
+                <li class="menu-item"><a href="danhsachtaikhoan.html">👥 Danh sách tài khoản</a></li>
+            </ul>
+            <a href="thongtintaikhoan.html" class="btn-account">👤 Tài khoản</a>
+        </aside>
+
+        <main>
+            <div class="banner">Liên hệ với LKH Store</div>
+            
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <h2>Thông Tin Liên Hệ</h2>
+                    <p><strong>📍 Địa chỉ:</strong> 123 Đường Số 1, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
+                    <p><strong>📞 Điện thoại cố định:</strong> (028) 3845 6789</p>
+                    <p><strong>📱 Hotline hỗ trợ:</strong> 0912 345 678</p>
+                    <p><strong>✉️ Email tiếp nhận phản hồi:</strong> support@lkhstore.com</p>
+                    <p><strong>⏰ Thời gian làm việc:</strong> 8:00 AM - 10:00 PM (Tất cả các ngày trong tuần)</p>
+                </div>
+
+                <div class="contact-form">
+                    <h2>Gửi Thư Góp Ý / Phản Hồi</h2>
+                    <form onsubmit="event.preventDefault(); alert('Cảm ơn bạn! Thông tin phản hồi đã được gửi đến ban quản trị LKH STORE.'); this.reset();">
+                        <div class="form-group">
+                            <label>Họ và Tên</label>
+                            <input type="text" placeholder="Nhập họ tên của bạn" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ Email</label>
+                            <input type="email" placeholder="Nhập email để nhận phản hồi" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="tel" placeholder="Nhập số điện thoại">
+                        </div>
+                        <div class="form-group">
+                            <label>Nội dung chi tiết</label>
+                            <textarea rows="4" placeholder="Nhập nội dung bạn muốn nhắn gửi đến cửa hàng..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Gửi Tin Nhắn</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

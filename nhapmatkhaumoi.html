@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Đặt Lại Mật Khẩu Mới</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- KHỐI NHẬP MẬT KHẨU CHÍNH --- */
+        .reset-container {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Logo thương hiệu đồng bộ */
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-logo a {
+            font-size: 26px;
+            font-weight: bold;
+            color: #cc2424;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        /* Khu vực nhập liệu */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #cc2424;
+        }
+
+        /* Nút Xác nhận */
+        .btn-submit {
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b31f1f;
+        }
+
+        /* Liên kết quay lại */
+        .redirect-login {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .redirect-login a {
+            color: #ff9900;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .redirect-login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reset-container">
+        <div class="brand-logo">
+            <a href="trangchu.html">LKH STORE</a>
+        </div>
+
+        <h2>Đặt Lại Mật Khẩu</h2>
+        <p class="description">Vui lòng tạo một mật khẩu mới có độ bảo mật cao để bảo vệ tài khoản của bạn.</p>
+
+        <form onsubmit="handleResetPassword(event)">
+            <div class="form-group">
+                <label>Mật khẩu mới</label>
+                <input type="password" id="new-password" placeholder="Nhập mật khẩu mới..." required minlength="6">
+            </div>
+
+            <div class="form-group">
+                <label>Xác nhận mật khẩu mới</label>
+                <input type="password" id="confirm-password" placeholder="Nhập lại mật khẩu mới..." required minlength="6">
+            </div>
+
+            <button type="submit" class="btn-submit">Xác nhận đổi mật khẩu</button>
+        </form>
+
+        <div class="redirect-login">
+            Quay lại <a href="dangnhap.html">Đăng nhập</a>
+        </div>
+    </div>
+
+    <script>
+        function handleResetPassword(event) {
+            event.preventDefault(); // Ngăn tải lại trang
+            
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            
+            // Kiểm tra hai mật khẩu có trùng nhau không
+            if (newPass !== confirmPass) {
+                alert("Lỗi: Mật khẩu nhập lại không trùng khớp! Vui lòng kiểm tra lại.");
+                return;
+            }
+            
+            // Giả lập đổi mật khẩu thành công
+            alert("Thay đổi mật khẩu thành công! Hệ thống sẽ tự động chuyển bạn về trang Đăng nhập.");
+            window.location.href = "dangnhap.html";
+        }
+    </script>
+</body>
+</html>

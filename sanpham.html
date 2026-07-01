@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Sản Phẩm Toàn Diện</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /*--- HEADER ---*/
+        header {
+            background-color: #cc2424;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-area a {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 40%;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            border: none;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            background-color: #ff9900;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        /*--- LAYOUT CHÍNH ---*/
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /*--- SIDEBAR TRÁI ---*/
+        aside {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-item.active > a {
+            color: white;
+            background-color: #cc2424;
+        }
+
+        /* --- SUBMENU HOVER --- */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+
+        .submenu li a:hover {
+            color: #cc2424;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .btn-account {
+            display: block;
+            text-align: center;
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        /*--- NỘI DUNG PHẢI ---*/
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #ff7300, #ff9900);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* BỘ LỌC HÃNG --- */
+        .brand-filter {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+
+        .brand-btn {
+            padding: 8px 18px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .brand-btn.active, .brand-btn:hover {
+            background-color: #cc2424;
+            color: white;
+            border-color: #cc2424;
+        }
+
+        /* LƯỚI SẢN PHẨM HOÀN CHỈNH */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .product-card.hidden {
+            display: none !important;
+        }
+
+        .product-img {
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            max-width: 100%;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #000;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-price {
+            color: #cc2424;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .btn-buy {
+            background: #cc2424;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 6px;
+        }
+
+        .btn-cart {
+            background: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area"><a href="trangchu.html">LKH STORE</a></div>
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm điện thoại...">
+            <button>Tìm</button>
+        </div>
+        <div class="cart-area">🛒 Giỏ hàng: <span id="cart-count">0</span></div>
+    </header>
+
+    <div class="container">
+        
+        <aside>
+            <div class="menu-title">Danh Mục</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="index.html">🏠 Trang chủ</a>
+                    <ul class="submenu">
+                        <li><a href="trangchu.html">🔥 Khuyến mãi hôm nay</a></li>
+                        <li><a href="trangchu.html">⭐ Sản phẩm nổi bật</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item active"><a href="sanpham.html">📱 Sản phẩm</a></li>
+                <li class="menu-item"><a href="gioithieu.html">ℹ️ Giới thiệu</a></li>
+                <li class="menu-item"><a href="lienhe.html">📞 Liên hệ</a></li>
+                <li class="menu-item"><a href="theodoidonhang.html">🚚 Theo dõi đơn hàng</a></li>
+                <li class="menu-item"><a href="danhsachtaikhoan.html">👥 Danh sách tài khoản</a></li>
+            </ul>
+            <a href="thongtintaikhoan.html" class="btn-account">👤 Tài khoản</a>
+        </aside>
+
+        <main>
+            <div class="banner">Danh sách tất cả sản phẩm (40 máy)</div>
+
+            <div class="brand-filter">
+                <button class="brand-btn active" onclick="filterBrand('all', this)">Tất cả</button>
+                <button class="brand-btn" onclick="filterBrand('iphone', this)">iPhone</button>
+                <button class="brand-btn" onclick="filterBrand('samsung', this)">Samsung</button>
+                <button class="brand-btn" onclick="filterBrand('vivo', this)">Vivo</button>
+                <button class="brand-btn" onclick="filterBrand('oppo', this)">Oppo</button>
+            </div>
+
+            <div class="product-grid" id="product-list">
+                
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/15promax.webp" alt="iPhone 15 Pro Max">
+                    <div class="product-name">iPhone 15 Pro Max</div>
+                    <div class="product-price">29.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/15pto.webp" alt="iPhone 15 Pro">
+                    <div class="product-name">iPhone 15 Pro</div>
+                    <div class="product-price">24.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/15plus.webp" alt="iPhone 15 Plus">
+                    <div class="product-name">iPhone 15 Plus</div>
+                    <div class="product-price">22.390.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip15.webp" alt="iPhone 15">
+                    <div class="product-name">iPhone 15</div>
+                    <div class="product-price">19.790.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip14pri.webp" alt="iPhone 14 Pro Max">
+                    <div class="product-name">iPhone 14 Pro Max</div>
+                    <div class="product-price">26.190.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip14pri.webp" alt="iPhone 14 Pro">
+                    <div class="product-name">iPhone 14 Pro</div>
+                    <div class="product-price">21.500.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip14.webp" alt="iPhone 14">
+                    <div class="product-name">iPhone 14</div>
+                    <div class="product-price">16.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip13.webp" alt="iPhone 13 Pro Max">
+                    <div class="product-name">iPhone 13 Pro Max</div>
+                    <div class="product-price">19.890.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip13.webp" alt="iPhone 13">
+                    <div class="product-name">iPhone 13</div>
+                    <div class="product-price">13.790.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="iphone">
+                    <img class="product-img" src="image/ip11.jpg" alt="iPhone 11">
+                    <div class="product-name">iPhone 11</div>
+                    <div class="product-price">9.890.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/SSGS24UT.jpg" alt="Samsung Galaxy S24 Ultra">
+                    <div class="product-name">Samsung Galaxy S24 Ultra</div>
+                    <div class="product-price">25.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/samsung-galaxy-s24-plus-1.jpg" alt="Samsung Galaxy S24 Plus">
+                    <div class="product-name">Samsung Galaxy S24 Plus</div>
+                    <div class="product-price">19.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/samsung-galaxy-s24-5g.jpg" alt="Samsung Galaxy S24 5G">
+                    <div class="product-name">Samsung Galaxy S24 5G</div>
+                    <div class="product-price">16.790.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/samsung-galaxy-z-fold-5-.webp" alt="Samsung Galaxy Z Fold5 5G">
+                    <div class="product-name">Samsung Galaxy Z Fold5 5G</div>
+                    <div class="product-price">29.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/Samsung Galaxy Z Flip5.jpg" alt="Samsung Galaxy Z Flip5 5G">
+                    <div class="product-name">Samsung Galaxy Z Flip5 5G</div>
+                    <div class="product-price">15.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/SSGS23UT.jpg" alt="Samsung Galaxy S23 Ultra">
+                    <div class="product-name">Samsung Galaxy S23 Ultra</div>
+                    <div class="product-price">20.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/SSG55.avif" alt="Samsung Galaxy A55 5G">
+                    <div class="product-name">Samsung Galaxy A55 5G</div>
+                    <div class="product-price">9.690.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/SSGA35.jpg" alt="Samsung Galaxy A35 5G">
+                    <div class="product-name">Samsung Galaxy A35 5G</div>
+                    <div class="product-price">7.690.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/SSGA15.jpg" alt="Samsung Galaxy A15 5G">
+                    <div class="product-name">Samsung Galaxy A15 5G</div>
+                    <div class="product-price">4.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="samsung">
+                    <img class="product-img" src="image/SSGA05s.jpg" alt="Samsung Galaxy A05s">
+                    <div class="product-name">Samsung Galaxy A05s</div>
+                    <div class="product-price">3.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivox100pro.png" alt="Vivo X100 Pro 5G">
+                    <div class="product-name">Vivo X100 Pro 5G</div>
+                    <div class="product-price">19.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivov30pro.png" alt="Vivo V30 Pro 5G">
+                    <div class="product-name">Vivo V30 Pro 5G</div>
+                    <div class="product-price">14.290.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivov30.png" alt="Vivo V30 5G">
+                    <div class="product-name">Vivo V30 5G</div>
+                    <div class="product-price">11.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivov30e.png" alt="Vivo V30e 5G">
+                    <div class="product-name">Vivo V30e 5G</div>
+                    <div class="product-price">9.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivov29.jpg" alt="Vivo V29 5G">
+                    <div class="product-name">Vivo V29 5G</div>
+                    <div class="product-price">10.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivo_Y100.jpg" alt="Vivo Y100 5G">
+                    <div class="product-name">Vivo Y100 5G</div>
+                    <div class="product-price">6.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivo_y36.jpg" alt="Vivo Y36 256GB">
+                    <div class="product-name">Vivo Y36 256GB</div>
+                    <div class="product-price">5.290.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivoy28.jpg" alt="Vivo Y28 8GB">
+                    <div class="product-name">Vivo Y28 8GB</div>
+                    <div class="product-price">5.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivoy17s.jpg" alt="Vivo Y17s 128GB">
+                    <div class="product-name">Vivo Y17s 128GB</div>
+                    <div class="product-price">3.690.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="vivo">
+                    <img class="product-img" src="image/vivoy03.jpg" alt="Vivo Y03 64GB">
+                    <div class="product-name">Vivo Y03 64GB</div>
+                    <div class="product-price">2.790.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/75942-OPPO-Find-N3-Flip.webp" alt="OPPO Find N3 Flip 5G">
+                    <div class="product-name">OPPO Find N3 Flip 5G</div>
+                    <div class="product-price">20.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/oppo Find N3.webp" alt="OPPO Find N3 5G">
+                    <div class="product-name">OPPO Find N3 5G</div>
+                    <div class="product-price">41.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/OPPO Reno11 Pro 5G.jpg" alt="OPPO Reno11 Pro 5G">
+                    <div class="product-name">OPPO Reno11 Pro 5G</div>
+                    <div class="product-price">14.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/OPPO Reno11  5G.jpg" alt="OPPO Reno11 5G">
+                    <div class="product-name">OPPO Reno11 5G</div>
+                    <div class="product-price">9.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/oppo-reno-11-f-5g.jpg" alt="OPPO Reno11 F 5G">
+                    <div class="product-name">OPPO Reno11 F 5G</div>
+                    <div class="product-price">8.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/OPPO Reno10 Pro plus 5G.jpg" alt="OPPO Reno10 Pro Plus">
+                    <div class="product-name">OPPO Reno10 Pro Plus</div>
+                    <div class="product-price">16.490.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/oppoa98.jpg" alt="OPPO A98 5G">
+                    <div class="product-name">OPPO A98 5G</div>
+                    <div class="product-price">6.990.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/oppo a79.jpg" alt="OPPO A79 5G">
+                    <div class="product-name">OPPO A79 5G</div>
+                    <div class="product-price">7.190.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/Oppo-A58-5G.jpg" alt="OPPO A58 128GB">
+                    <div class="product-name">OPPO A58 128GB</div>
+                    <div class="product-price">5.190.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+                <div class="product-card" data-brand="oppo">
+                    <img class="product-img" src="image/Oppo-A18-b-original.webp" alt="OPPO A18 64GB">
+                    <div class="product-name">OPPO A18 64GB</div>
+                    <div class="product-price">3.290.000đ</div>
+                    <button class="btn-buy" onclick="addCart()">Mua ngay</button>
+                    <button class="btn-cart" onclick="addCart()">Thêm vào giỏ</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Xử lý bộ lọc hãng thông minh dựa trên thuộc tính "data-brand" có sẵn ở HTML
+        function filterBrand(brand, button) {
+            document.querySelectorAll('.brand-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (brand === 'all' || card.getAttribute('data-brand') === brand) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Tương tác giỏ hàng đơn giản
+        let cartCount = 0;
+        function addCart() {
+            cartCount++;
+            document.getElementById('cart-count').innerText = cartCount;
+            alert('Đã cập nhật sản phẩm vào giỏ hàng thành công!');
+        }
+    </script>
+</body>
+</html>

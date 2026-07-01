@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Tài Khoản</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /*--- HEADER ---*/
+        header {
+            background-color: #cc2424;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-area a {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 40%;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            border: none;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            background-color: #ff9900;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /*--- LAYOUT CHÍNH ---*/
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /*--- SIDEBAR TRÁI ---*/
+        aside {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        /* --- SUBMENU HOVER --- */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+
+        .submenu li a:hover {
+            color: #cc2424;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        /* Nút tài khoản ở trạng thái active */
+        .btn-account {
+            display: block;
+            text-align: center;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        /*--- NỘI DUNG PHẢI ---*/
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #ff7300, #ff9900);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* KHỐI THÔNG BÁO YÊU CẦU ĐĂNG NHẬP */
+        .auth-notice-card {
+            background: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .lock-icon {
+            font-size: 60px;
+            color: #cc2424;
+            margin-bottom: 15px;
+        }
+
+        .auth-notice-card h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .auth-notice-card p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Nhóm nút bấm điều hướng hành động */
+        .auth-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-auth {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .btn-login-now {
+            background-color: #cc2424;
+            color: white;
+        }
+
+        .btn-login-now:hover {
+            background-color: #b31f1f;
+        }
+
+        .btn-register-now {
+            background-color: white;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .btn-register-now:hover {
+            background-color: #eee;
+            border-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area"><a href="trangchu.html">LKH STORE</a></div>
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm thông tin...">
+            <button>Tìm</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <aside>
+            <div class="menu-title">Danh Mục</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="index.html">🏠 Trang chủ</a>
+                    <ul class="submenu">
+                        <li><a href="trangchu.html">🔥 Khuyến mãi hôm nay</a></li>
+                        <li><a href="trangchu.html">⭐ Sản phẩm nổi bật</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="index.html">📱 Sản phẩm</a></li>
+                <li class="menu-item"><a href="gioithieu.html">ℹ️ Giới thiệu</a></li>
+                <li class="menu-item"><a href="lienhe.html">📞 Liên hệ</a></li>
+                <li class="menu-item"><a href="theodoidonhang.html">🚚 Theo dõi đơn hàng</a></li>
+                <li class="menu-item"><a href="danhsachtaikhoan.html">👥 Danh sách tài khoản</a></li>
+            </ul>
+            <a href="thongtintaikhoan.html" class="btn-account">👤 Tài khoản</a>
+        </aside>
+
+        <main>
+            <div class="banner">Thông tin tài khoản thành viên</div>
+            
+            <div class="auth-notice-card">
+                <div class="lock-icon">🔒</div>
+                <h2>Bạn chưa đăng nhập vào hệ thống</h2>
+                <p>Vui lòng đăng nhập bằng tài khoản của bạn để xem thông tin cá nhân bảo mật, trạng thái thành viên cũng như theo dõi lịch sử các đơn hàng đã đặt tại LKH STORE.</p>
+                
+                <div class="auth-btn-group">
+                    <a href="dangnhap.html" class="btn-auth btn-login-now">Đăng Nhập Ngay</a>
+                    <a href="dangky.html" class="btn-auth btn-register-now">Tạo Tài Khoản Mới</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

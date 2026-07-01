@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Khôi Phục Mật Khẩu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- KHỐI QUÊN MẬT KHẨU CHÍNH --- */
+        .forgot-container {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Logo thương hiệu đồng bộ */
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-logo a {
+            font-size: 26px;
+            font-weight: bold;
+            color: #cc2424;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        /* Khu vực nhập liệu */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #cc2424;
+        }
+
+        /* Nút Khôi phục mật khẩu */
+        .btn-submit {
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b31f1f;
+        }
+
+        /* Khu vực điều hướng quay lại */
+        .redirect-links {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #555;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .redirect-links a {
+            color: #ff9900;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .redirect-links a.back-login {
+            color: #cc2424;
+        }
+
+        .redirect-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="forgot-container">
+        <div class="brand-logo">
+            <a href="trangchu.html">LKH STORE</a>
+        </div>
+
+        <h2>Quên Mật Khẩu?</h2>
+        <p class="description">Đừng lo lắng! Hãy nhập email đã đăng ký của bạn vào ô dưới đây. Chúng tôi sẽ gửi một liên kết để bạn thiết lập lại mật khẩu mới.</p>
+
+        <form onsubmit="handleForgotPassword(event)">
+            <div class="form-group">
+                <label>Địa chỉ Email đăng ký</label>
+                <input type="email" id="forgot-email" placeholder="Ví dụ: hoang@example.com..." required>
+            </div>
+
+            <button type="submit" class="btn-submit">Gửi yêu cầu khôi phục</button>
+        </form>
+
+        <div class="redirect-links">
+            <a href="dangnhap.html" class="back-login">⬅ Quay lại Đăng nhập</a>
+            <a href="dangky.html">Đăng ký tài khoản mới</a>
+        </div>
+    </div>
+
+    <script>
+        function handleForgotPassword(event) {
+            event.preventDefault(); // Ngăn chặn hành vi tải lại trang mặc định
+            
+            const email = document.getElementById('forgot-email').value.trim();
+            
+            // Hiển thị thông báo thành công và chuyển hướng về trang đăng nhập
+            alert(`Hệ thống đã gửi hướng dẫn lấy lại mật khẩu tới email: ${email}.\nVui lòng kiểm tra hộp thư đến hoặc thư rác (Spam).`);
+            window.location.href = "dangnhap.html";
+        }
+    </script>
+</body>
+</html>

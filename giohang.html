@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKH STORE - Giỏ Hàng Của Bạn</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /*--- HEADER ---*/
+        header {
+            background-color: #cc2424;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-area a {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 40%;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            border: none;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            background-color: #ff9900;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /*--- LAYOUT CHÍNH ---*/
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /*--- SIDEBAR TRÁI ---*/
+        aside {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item > a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        /* --- SUBMENU HOVER --- */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .submenu li a {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+
+        .submenu li a:hover {
+            color: #cc2424;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .btn-account {
+            display: block;
+            text-align: center;
+            background-color: #cc2424;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        /*--- NỘI DUNG PHẢI (GIỎ HÀNG) ---*/
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, #ff7300, #ff9900);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* Layout chia 2 khối: Danh sách sản phẩm & Tóm tắt đơn hàng */
+        .cart-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cart-items-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 450px;
+        }
+
+        .cart-summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 320px;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+
+        /* Bảng danh sách sản phẩm */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            padding: 12px;
+            color: #666;
+            border-bottom: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .prod-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Nút tăng giảm số lượng */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-qty {
+            background: #eee;
+            border: none;
+            width: 25px;
+            height: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-qty:hover {
+            background: #ddd;
+        }
+
+        .qty-input {
+            width: 35px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 3px 0;
+            font-size: 13px;
+        }
+
+        .btn-delete-item {
+            color: #cc2424;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-delete-item:hover {
+            text-decoration: underline;
+        }
+
+        /* Khối tổng tiền tóm tắt */
+        .cart-summary-card h3 {
+            font-size: 18px;
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .summary-row.total {
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #cc2424;
+        }
+
+        .btn-checkout {
+            display: block;
+            width: 100%;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-checkout:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area"><a href="trangchu.html">LKH STORE</a></div>
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm sản phẩm...">
+            <button>Tìm</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <aside>
+            <div class="menu-title">Danh Mục</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="index.html">🏠 Trang chủ</a>
+                    <ul class="submenu">
+                        <li><a href="trangchu.html">🔥 Khuyến mãi hôm nay</a></li>
+                        <li><a href="trangchu.html">⭐ Sản phẩm nổi bật</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item"><a href="index.html">📱 Sản phẩm</a></li>
+                <li class="menu-item"><a href="gioithieu.html">ℹ️ Giới thiệu</a></li>
+                <li class="menu-item"><a href="lienhe.html">📞 Liên hệ</a></li>
+                <li class="menu-item"><a href="theodoidonhang.html">🚚 Theo dõi đơn hàng</a></li>
+                <li class="menu-item"><a href="danhsachtaikhoan.html">👥 Danh sách tài khoản</a></li>
+            </ul>
+            <a href="thongtintaikhoan.html" class="btn-account">👤 Tài khoản</a>
+        </aside>
+
+        <main>
+            <div class="banner">Giỏ hàng của bạn</div>
+            
+            <div class="cart-wrapper">
+                <div class="cart-items-card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Giá bán</th>
+                                <th>Số lượng</th>
+                                <th>Tạm tính</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-table-body">
+                            <tr id="item-1">
+                                <td class="prod-title">iPhone 15 Pro Max 256GB</td>
+                                <td class="prod-price" data-price="29490000">29.490.000đ</td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <button class="btn-qty" onclick="changeQty('item-1', -1)">-</button>
+                                        <input type="text" class="qty-input" value="1" readonly>
+                                        <button class="btn-qty" onclick="changeQty('item-1', 1)">+</button>
+                                    </div>
+                                </td>
+                                <td class="item-subtotal">29.490.000đ</td>
+                                <td><button class="btn-delete-item" onclick="deleteItem('item-1')">Xóa</button></td>
+                            </tr>
+                            <tr id="item-2">
+                         
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cart-summary-card">
+                    <h3>Tóm tắt đơn hàng</h3>
+                    <div class="summary-row">
+                        <span>Tạm tính:</span>
+                        <span id="summary-subtotal">&nbsp;</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Phí vận chuyển:</span>
+                        <span style="color: green; font-weight: bold;">Miễn phí</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Tổng tiền:</span>
+                        <span id="summary-total">&nbsp;</span>
+                    </div>
+                    
+                     <button class="btn-checkout" id="btn-checkout" onclick="window.location.href='xulithanhtoan.html'">Tiến Hành Thanh Toán</button> 
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Hàm thay đổi số lượng bằng nút + / -
+        function changeQty(rowId, amount) {
+            const row = document.getElementById(rowId);
+            const qtyInput = row.querySelector('.qty-input');
+            let currentQty = parseInt(qtyInput.value);
+            
+            currentQty += amount;
+            if (currentQty < 1) currentQty = 1; // Số lượng tối thiểu là 1
+            
+            qtyInput.value = currentQty;
+            
+            // Cập nhật lại tạm tính của dòng này
+            const price = parseInt(row.querySelector('.prod-price').getAttribute('data-price'));
+            const subtotalCell = row.querySelector('.item-subtotal');
+            const subtotalValue = price * currentQty;
+            subtotalCell.innerText = subtotalValue.toLocaleString('vi-VN') + 'đ';
+            
+            updateCartTotal();
+        }
+
+        // Hàm xóa sản phẩm khỏi giỏ hàng
+        function deleteItem(rowId) {
+            if (confirm("Bạn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+                document.getElementById(rowId).remove();
+                updateCartTotal();
+            }
+        }
+
+        // Hàm quét và tính lại tổng tiền cho toàn bộ giỏ hàng
+        function updateCartTotal() {
+            const rows = document.querySelectorAll('#cart-table-body tr');
+            let total = 0;
+            
+            rows.forEach(row => {
+                const price = parseInt(row.querySelector('.prod-price').getAttribute('data-price'));
+                const qty = parseInt(row.querySelector('.qty-input').value);
+                total += price * qty;
+            });
+            
+            // Cập nhật lên giao diện tóm tắt đơn hàng
+            const formattedTotal = total.toLocaleString('vi-VN') + 'đ';
+            document.getElementById('summary-subtotal').innerText = formattedTotal;
+            document.getElementById('summary-total').innerText = formattedTotal;
+            
+            // Nếu giỏ hàng trống rỗng
+            if (rows.length === 0) {
+                document.getElementById('cart-table-body').innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px; color: #888;">Giỏ hàng của bạn đang trống!</td></tr>`;
+                document.getElementById('summary-subtotal').innerText = '0đ';
+                document.getElementById('summary-total').innerText = '0đ';
+                
+                // Vô hiệu hóa nút thanh toán nếu không có hàng
+                document.getElementById('btn-checkout').style.backgroundColor = '#ccc';
+                document.getElementById('btn-checkout').style.cursor = 'not-allowed';
+                document.getElementById('btn-checkout').onclick = null;
+            }
+        }
+
+        // THAY ĐỔI Ở ĐÂY: Hàm xử lý chuyển hướng thanh toán
+        function goToCheckout() {
+            const rows = document.querySelectorAll('#cart-table-body tr');
+            if (rows.length === 0) {
+                alert("Giỏ hàng của bạn đang trống, không thể thanh toán!");
+                return;
+            }
+            // Chuyển hướng sang trang xử lý thanh toán
+            window.location.href = "thanhtoan.html";
+        }
+    </script>
+</body>
+</html>
